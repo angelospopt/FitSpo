@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Angelo Spò — Personal Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#15140F;
+    --black-soft:#1D1B14;
+    --yellow:#FCE021;
+    --yellow-deep:#E8C700;
+    --cream:#FAF8F2;
+    --ink:#1B1A15;
+    --muted:#716C5C;
+    --line:#E7E2D2;
+    --radius:14px;
+    --wrap:640px;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Baloo 2', sans-serif;
+    margin:0;
+    line-height:1.1;
+    letter-spacing:.2px;
+  }
+  p{margin:0;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  .wrap{
+    max-width:var(--wrap);
+    margin:0 auto;
+    padding-left:22px;
+    padding-right:22px;
+  }
+
+  /* ---------- icon ---------- */
+  .icon-bolt{display:block; color:var(--yellow);}
+
+  /* ---------- header ---------- */
+  .topbar{
+    position:sticky; top:0; z-index:20;
+    background:var(--black);
+    border-bottom:3px solid var(--yellow);
+  }
+  .topbar .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand .icon-bolt{width:22px; height:34px;}
+  .brand-text{display:flex; flex-direction:column; line-height:1;}
+  .brand-name{
+    font-family:'Baloo 2', sans-serif; font-weight:700;
+    font-size:18px; color:var(--cream); letter-spacing:.2px;
+  }
+  .brand-tag{
+    font-size:10.5px; color:var(--yellow); text-transform:lowercase;
+    letter-spacing:.4px; margin-top:2px;
+  }
+  .nav-cta{
+    font-family:'Work Sans', sans-serif; font-weight:600; font-size:14px;
+    color:var(--black); background:var(--yellow);
+    border:none; border-radius:999px; padding:9px 18px;
+    cursor:pointer; white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--yellow-deep);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; overflow:hidden;
+    background:var(--black);
+    padding-top:52px; padding-bottom:56px;
+  }
+  .hero__bolt{
+    position:absolute; top:-6%; right:-10%;
+    width:58vw; max-width:230px;
+    color:var(--yellow); opacity:.92;
+    transform:rotate(6deg);
+    pointer-events:none;
+  }
+  .hero__content{position:relative; z-index:1; max-width:420px;}
+  .hero h1{
+    font-size:34px; color:var(--cream); font-weight:700;
+  }
+  .hero p{
+    margin-top:16px; font-size:16px; color:#CFCABB; max-width:360px;
+  }
+  .btn-primary{
+    display:inline-block; margin-top:26px;
+    background:var(--yellow); color:var(--black);
+    font-family:'Work Sans', sans-serif; font-weight:700; font-size:15px;
+    padding:14px 26px; border-radius:999px; border:none;
+    text-decoration:none; cursor:pointer;
+  }
+  .btn-primary:hover{background:var(--yellow-deep);}
+
+  .stripe{
+    height:12px;
+    background:repeating-linear-gradient(-45deg, var(--yellow) 0 14px, var(--black) 14px 28px);
+  }
+
+  /* ---------- servizi ---------- */
+  .servizi{padding-top:44px; padding-bottom:12px;}
+  .servizi h2{font-size:24px; color:var(--ink);}
+  .servizi > .wrap > p{margin-top:8px; color:var(--muted); font-size:14.5px;}
+
+  .accordion{margin-top:26px; border-top:1px solid var(--line);}
+  .acc-item{border-bottom:1px solid var(--line);}
+  .acc-header{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    gap:12px; background:none; border:none; cursor:pointer;
+    padding:20px 2px; text-align:left;
+  }
+  .acc-title{
+    font-family:'Baloo 2', sans-serif; font-weight:700; font-size:19px; color:var(--ink);
+  }
+  .acc-chevron{width:20px; height:20px; color:var(--ink); flex:none; transition:transform .3s ease;}
+  .acc-header[aria-expanded="true"] .acc-chevron{transform:rotate(180deg);}
+
+  .acc-panel{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .acc-panel-inner{padding:0 2px 24px;}
+  .acc-panel-inner p{color:var(--ink); font-size:15px;}
+
+  /* chi siamo */
+  .bio-name{font-family:'Baloo 2', sans-serif; font-weight:700; font-size:16px; display:block; margin-bottom:8px;}
+
+  /* prenota */
+  .booking-note{font-size:13.5px; color:var(--muted); margin-bottom:16px;}
+  .pill-label{font-size:12.5px; font-weight:600; color:var(--muted); text-transform:lowercase; letter-spacing:.3px; display:block; margin-bottom:10px;}
+  .pill-row{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;}
+  .day-pill, .slot-pill{
+    font-family:'Work Sans', sans-serif; font-weight:600; font-size:13.5px;
+    padding:9px 14px; border-radius:999px; border:1.5px solid var(--ink);
+    background:transparent; color:var(--ink); cursor:pointer;
+  }
+  .day-pill.is-selected, .slot-pill.is-selected{
+    background:var(--yellow); border-color:var(--yellow); color:var(--black);
+  }
+  .day-pill:disabled{opacity:.35; cursor:not-allowed;}
+  .slots-empty{font-size:14px; color:var(--muted); font-style:italic;}
+  .booking-hours{font-size:12.5px; color:var(--muted); margin-bottom:18px;}
+  .btn-book{
+    display:inline-block; background:var(--yellow); color:var(--black);
+    font-weight:700; font-size:14.5px; padding:13px 22px; border-radius:999px;
+    text-decoration:none;
+  }
+  .btn-book.is-disabled{
+    background:var(--line); color:var(--muted); pointer-events:none;
+  }
+
+  /* social */
+  .social-links{display:flex; flex-direction:column; gap:10px;}
+  .social-link{
+    display:flex; align-items:center; gap:14px;
+    padding:14px 16px; border:1.5px solid var(--ink); border-radius:var(--radius);
+    text-decoration:none; color:var(--ink);
+  }
+  .social-link:hover{background:var(--black); color:var(--cream); border-color:var(--black);}
+  .social-link:hover .social-icon{color:var(--yellow);}
+  .social-icon{width:22px; height:22px; flex:none; color:var(--ink);}
+  .social-text strong{display:block; font-family:'Baloo 2', sans-serif; font-size:15.5px;}
+  .social-text small{display:block; font-size:13px; color:var(--muted); margin-top:2px;}
+  .social-link:hover .social-text small{color:#B9B4A2;}
+
+  /* ---------- cta band ---------- */
+  .cta-band{
+    background:var(--black); text-align:center;
+    padding:52px 22px 56px;
+  }
+  .cta-band h2{color:var(--cream); font-size:24px; max-width:340px; margin:0 auto;}
+  .cta-band p{color:#CFCABB; font-size:14.5px; margin-top:12px;}
+  .btn-whatsapp{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top:24px; background:var(--yellow); color:var(--black);
+    font-family:'Work Sans', sans-serif; font-weight:700; font-size:15.5px;
+    padding:15px 26px; border-radius:999px; text-decoration:none;
+  }
+  .btn-whatsapp:hover{background:var(--yellow-deep);}
+  .btn-whatsapp svg{width:20px; height:20px;}
+
+  /* ---------- footer ---------- */
+  footer{background:var(--cream); padding:36px 22px 30px; text-align:center;}
+  footer .icon-bolt{width:16px; height:24px; margin:0 auto 10px;}
+  .footer-name{font-family:'Baloo 2', sans-serif; font-weight:700; font-size:15px;}
+  .footer-sub{font-size:12.5px; color:var(--muted); margin-top:4px;}
+  .footer-socials{display:flex; justify-content:center; gap:16px; margin-top:16px;}
+  .footer-socials a{color:var(--ink);}
+  .footer-socials svg{width:19px; height:19px;}
+  .footer-contact{font-size:12.5px; color:var(--muted); margin-top:16px;}
+  .footer-copy{font-size:11.5px; color:#B4AF9E; margin-top:18px;}
+
+  #prenota-panel, #chi-siamo-panel, #social-panel{scroll-margin-top:80px;}
+  .acc-item{scroll-margin-top:70px;}
+
+  @media (min-width:640px){
+    .hero{padding-top:70px; padding-bottom:72px;}
+    .hero h1{font-size:42px;}
+    .hero__bolt{width:220px; top:-4%; right:2%;}
+    .hero__content{max-width:460px;}
+    .servizi{padding-top:60px;}
+    .cta-band{padding:68px 22px 72px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .acc-panel, .acc-chevron{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- reusable icon symbol -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bolt" viewBox="0 0 46.96 71.15">
+      <path fill="currentColor" d="M 42.027344 5.988281 L 11.554688 29.15625 C 9.792969 30.496094 10.066406 33.222656 12.058594 34.183594 L 18.429688 37.261719 C 21.789062 38.882812 22.828125 43.167969 20.585938 46.148438 L 8.796875 61.824219 C 8.152344 62.679688 9.242188 63.757812 10.089844 63.105469 L 41.007812 39.410156 C 42.792969 38.039062 42.464844 35.257812 40.40625 34.347656 L 33.925781 31.476562 C 30.417969 29.921875 29.292969 25.492188 31.632812 22.453125 L 43.3125 7.28125 C 43.96875 6.433594 42.882812 5.339844 42.027344 5.988281 "/>
+    </symbol>
+    <symbol id="ig" viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/>
+      <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+    </symbol>
+    <symbol id="tiktok" viewBox="0 0 24 24">
+      <path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+        d="M14 4v9.6a3.2 3.2 0 1 1-2.4-3.1M14 4c.4 2 2 3.5 4 3.8"/>
+    </symbol>
+    <symbol id="whatsapp" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.2c-.2.6-1.3 1.2-1.9 1.3-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.6-.6-2.9-1.2-4.7-4.2-4.9-4.4-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.4.2.5.7 1.8.8 1.9.1.2.1.3 0 .5-.1.2-.1.3-.3.5l-.4.5c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.5.7 1.8.8.3.1.5.2.5.3.1.2.1.6-.1 1.2Z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg class="icon-bolt"><use href="#bolt"/></svg>
+      <div class="brand-text">
+        <span class="brand-name">angelo spò</span>
+        <span class="brand-tag">personal trainer</span>
+      </div>
+    </div>
+    <button class="nav-cta" id="navPrenota" type="button">Prenota</button>
+  </div>
+</header>
+
+<section class="hero">
+  <svg class="icon-bolt hero__bolt"><use href="#bolt"/></svg>
+  <div class="wrap">
+    <div class="hero__content">
+      <h1>Preparazione fisica con metodo, non solo allenamento.</h1>
+      <p>Personal training privato, costruito sul tuo percorso: esperienza sul campo, competenza e passione per l'allenamento.</p>
+      <a href="#prenota" class="btn-primary" id="heroPrenota">Prenota una lezione</a>
+    </div>
+  </div>
+</section>
+
+<div class="stripe"></div>
+
+<section class="servizi">
+  <div class="wrap">
+    <h2>Scopri di più</h2>
+    <p>Tocca una voce per aprirla.</p>
+
+    <div class="accordion">
+
+      <div class="acc-item" id="chi-siamo">
+        <button class="acc-header" id="header-chi-siamo" aria-expanded="false" aria-controls="chi-siamo-panel" type="button">
+          <span class="acc-title">Chi siamo</span>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acc-panel" id="chi-siamo-panel">
+          <div class="acc-panel-inner">
+            <span class="bio-name">Angelo Spò</span>
+            <p>Angelo Spò è un personal trainer e professionista della preparazione fisica che unisce esperienza sul campo, competenza e passione per l'allenamento. Il suo approccio mette al centro la persona e il suo percorso, con l'obiettivo di costruire una preparazione consapevole, efficace e sostenibile, andando oltre il semplice esercizio fisico.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item" id="prenota">
+        <button class="acc-header" id="header-prenota" aria-expanded="false" aria-controls="prenota-panel" type="button">
+          <span class="acc-title">Prenota lezione</span>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acc-panel" id="prenota-panel">
+          <div class="acc-panel-inner">
+            <p class="booking-note">Scegli il giorno e l'orario: ti confermo la disponibilità su WhatsApp.</p>
+
+            <span class="pill-label">giorno</span>
+            <div class="pill-row" id="dayRow">
+              <button class="day-pill" data-day="lun" type="button">Lun</button>
+              <button class="day-pill" data-day="mar" type="button">Mar</button>
+              <button class="day-pill" data-day="mer" type="button">Mer</button>
+              <button class="day-pill" data-day="gio" type="button">Gio</button>
+              <button class="day-pill" data-day="ven" type="button">Ven</button>
+              <button class="day-pill" data-day="sab" type="button">Sab</button>
+              <button class="day-pill" data-day="dom" type="button">Dom</button>
+            </div>
+
+            <span class="pill-label">orario</span>
+            <div class="pill-row" id="timeRow">
+              <span class="slots-empty">Seleziona prima un giorno.</span>
+            </div>
+
+            <p class="booking-hours">Lun–Ven 7:00–20:00 · Sab 9:00–13:00 · Dom chiuso</p>
+
+            <a href="#" class="btn-book is-disabled" id="bookingLink" aria-disabled="true">Richiedi su WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item" id="social">
+        <button class="acc-header" id="header-social" aria-expanded="false" aria-controls="social-panel" type="button">
+          <span class="acc-title">Social media</span>
+          <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="acc-panel" id="social-panel">
+          <div class="acc-panel-inner">
+            <p class="booking-note">Allenamenti, consigli e dietro le quinte.</p>
+            <div class="social-links">
+              <a class="social-link" href="https://www.instagram.com/angelospo_pt?stkn=NGtvNjduc3RqZG14" target="_blank" rel="noopener">
+                <svg class="social-icon"><use href="#ig"/></svg>
+                <span class="social-text"><strong>Instagram</strong><small>@angelospo_pt</small></span>
+              </a>
+              <a class="social-link" href="https://www.tiktok.com/@angelospo_pt?_r=1&_t=ZN-99jDo3TJ8Kp" target="_blank" rel="noopener">
+                <svg class="social-icon"><use href="#tiktok"/></svg>
+                <span class="social-text"><strong>TikTok</strong><small>@angelospo_pt</small></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <h2>Vuoi conoscere il contenuto del servizio?</h2>
+  <p>Scrivimi su WhatsApp: rispondo io, Angelo.</p>
+  <a class="btn-whatsapp" href="https://wa.me/393493493211?text=Ciao%20Angelo!%20Vorrei%20avere%20maggiori%20informazioni%20sui%20tuoi%20servizi%20di%20personal%20training." target="_blank" rel="noopener">
+    <svg><use href="#whatsapp"/></svg>
+    Scrivimi su WhatsApp
+  </a>
+</section>
+
+<footer>
+  <svg class="icon-bolt"><use href="#bolt"/></svg>
+  <div class="footer-name">Angelo Spò</div>
+  <div class="footer-sub">Personal trainer · Studio privato</div>
+  <div class="footer-socials">
+    <a href="https://www.instagram.com/angelospo_pt?stkn=NGtvNjduc3RqZG14" target="_blank" rel="noopener" aria-label="Instagram"><svg><use href="#ig"/></svg></a>
+    <a href="https://www.tiktok.com/@angelospo_pt?_r=1&_t=ZN-99jDo3TJ8Kp" target="_blank" rel="noopener" aria-label="TikTok"><svg><use href="#tiktok"/></svg></a>
+  </div>
+  <div class="footer-contact">+39 349 349 3211</div>
+  <div class="footer-copy">© 2026 Angelo Spò</div>
+</footer>
+
+<script>
+(function(){
+  var headers = Array.prototype.slice.call(document.querySelectorAll('.acc-header'));
+
+  function closeHeader(h){
+    h.setAttribute('aria-expanded','false');
+    var panel = document.getElementById(h.getAttribute('aria-controls'));
+    panel.style.maxHeight = null;
+  }
+  function openHeader(h){
+    h.setAttribute('aria-expanded','true');
+    var panel = document.getElementById(h.getAttribute('aria-controls'));
+    panel.style.maxHeight = panel.scrollHeight + 'px';
+  }
+  function refreshOpenHeight(panel){
+    if (panel.style.maxHeight && panel.style.maxHeight !== '0px' && panel.style.maxHeight !== ''){
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    }
+  }
+
+  headers.forEach(function(header){
+    header.addEventListener('click', function(){
+      var isOpen = header.getAttribute('aria-expanded') === 'true';
+      headers.forEach(function(h){ if(h !== header) closeHeader(h); });
+      if (isOpen){ closeHeader(header); } else { openHeader(header); }
+    });
+  });
+
+  function openPanelById(headerId){
+    var header = document.getElementById(headerId);
+    if (!header) return;
+    if (header.getAttribute('aria-expanded') !== 'true'){ header.click(); }
+    setTimeout(function(){
+      header.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 10);
+  }
+
+  document.getElementById('navPrenota').addEventListener('click', function(){
+    openPanelById('header-prenota');
+  });
+  document.getElementById('heroPrenota').addEventListener('click', function(e){
+    e.preventDefault();
+    openPanelById('header-prenota');
+  });
+
+  /* ---------- booking calendar ---------- */
+  var availability = {
+    lun:{label:'Lunedì', start:7, end:20},
+    mar:{label:'Martedì', start:7, end:20},
+    mer:{label:'Mercoledì', start:7, end:20},
+    gio:{label:'Giovedì', start:7, end:20},
+    ven:{label:'Venerdì', start:7, end:20},
+    sab:{label:'Sabato', start:9, end:13},
+    dom:{label:'Domenica', start:null, end:null}
+  };
+
+  var dayButtons = Array.prototype.slice.call(document.querySelectorAll('.day-pill'));
+  var timeRow = document.getElementById('timeRow');
+  var bookingLink = document.getElementById('bookingLink');
+  var prenotaPanel = document.getElementById('prenota-panel');
+
+  var selectedDay = null, selectedTime = null;
+
+  function buildSlots(dayKey){
+    var info = availability[dayKey];
+    timeRow.innerHTML = '';
+    selectedTime = null;
+    if (!info.start){
+      var msg = document.createElement('span');
+      msg.className = 'slots-empty';
+      msg.textContent = 'Studio chiuso la domenica.';
+      timeRow.appendChild(msg);
+      return;
+    }
+    for (var h = info.start; h < info.end; h++){
+      (function(h){
+        var label = (h < 10 ? '0' : '') + h + ':00';
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'slot-pill';
+        btn.textContent = label;
+        btn.addEventListener('click', function(){
+          Array.prototype.slice.call(timeRow.querySelectorAll('.slot-pill')).forEach(function(b){ b.classList.remove('is-selected'); });
+          btn.classList.add('is-selected');
+          selectedTime = label;
+          updateBookingButton();
+        });
+        timeRow.appendChild(btn);
+      })(h);
+    }
+  }
+
+  function updateBookingButton(){
+    if (selectedDay && selectedTime && availability[selectedDay].start){
+      var text = 'Ciao Angelo! Vorrei prenotare una lezione: ' + availability[selectedDay].label + ' alle ' + selectedTime + '.';
+      bookingLink.href = 'https://wa.me/393493493211?text=' + encodeURIComponent(text);
+      bookingLink.classList.remove('is-disabled');
+      bookingLink.setAttribute('aria-disabled','false');
+      bookingLink.setAttribute('target','_blank');
+      bookingLink.setAttribute('rel','noopener');
+    } else {
+      bookingLink.classList.add('is-disabled');
+      bookingLink.setAttribute('aria-disabled','true');
+      bookingLink.removeAttribute('href');
+    }
+  }
+
+  dayButtons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      dayButtons.forEach(function(b){ b.classList.remove('is-selected'); });
+      btn.classList.add('is-selected');
+      selectedDay = btn.getAttribute('data-day');
+      buildSlots(selectedDay);
+      updateBookingButton();
+      refreshOpenHeight(prenotaPanel);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
